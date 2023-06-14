@@ -1,19 +1,23 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link :to="{ name: 'main' }">Vue Recipes</router-link>|
-      <router-link :to="{ name: 'search' }">Search</router-link>|
-      {{ !$root.store.username }}
-      <span v-if="!$root.store.username">
-        Guest:
-        <router-link :to="{ name: 'register' }">Register</router-link>|
-        <router-link :to="{ name: 'login' }">Login</router-link>|
-      </span>
-      <span v-else>
-        {{ $root.store.username }}: <button @click="Logout">Logout</button>|
-      </span>
-    </div>
-    <router-view />
+    <b-navbar toggleable="lg" type="light" variant="light">
+      <b-navbar-nav>
+        <b-nav-item router-link :to="{ name: 'main' }">Vue Recipes</b-nav-item>
+        <b-nav-item router-link :to="{ name: 'search' }">Search</b-nav-item>
+
+        <!-- {{ !$root.store.username }} -->
+        <template v-if="!$root.store.username">
+          <b-nav-text><span class="nav-text">(Guest)</span></b-nav-text>
+          <b-nav-item router-link :to="{ name: 'register' }">Register</b-nav-item>
+          <b-nav-item router-link :to="{ name: 'login' }">Login</b-nav-item>
+        </template>
+
+        <template v-else>
+          {{ $root.store.username }}: <b-button @click="Logout">Logout</b-button>
+        </template>  
+      </b-navbar-nav>
+    </b-navbar>
+    <router-view /> 
   </div>
 </template>
 
@@ -40,20 +44,13 @@ export default {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: #2c3e50;
+  color: #232b27;
   min-height: 100vh;
 }
 
-#nav {
-  padding: 30px;
-}
-
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
+.nav-text{
+  font-size:small;
+  margin-left: 5px;
+  color: #3d4944;
 }
 </style>

@@ -2,18 +2,22 @@
   "name": "assignment-3-3",
   "version": "1.0.0",
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build"
+    "serve": "set NODE_OPTIONS=--openssl-legacy-provider && vue-cli-service serve",
+    "build": "set NODE_OPTIONS=--openssl-legacy-provider && vue-cli-service build",
+    "lint": "set NODE_OPTIONS=--openssl-legacy-provider && vue-cli-service lint"
   },
   "dependencies": {
     "axios": "^0.19.2",
-    "bootstrap": "^4.5.0",
-    "bootstrap-vue": "^2.15.0",
+    "bootstrap": "^4.6.2",
+    "bootstrap-vue": "^2.23.1",
     "core-js": "^3.6.5",
+    "node": "^20.2.0",
     "sass": "^1.50.0",
-    "vue": "^2.6.11",
+    "vue": "^2.7.14",
     "vue-axios": "^2.1.5",
+    "vue-loader": "^17.2.2",
     "vue-router": "^3.2.0",
+    "vueify": "^9.4.1",
     "vuelidate": "^0.7.5"
   },
   "devDependencies": {
@@ -28,6 +32,6 @@
     "eslint-plugin-vue": "^6.2.2",
     "prettier": "^1.19.1",
     "sass-loader": "^8.0.2",
-    "vue-template-compiler": "^2.6.11"
+    "vue-template-compiler": "^2.7.14"
   }
 }
