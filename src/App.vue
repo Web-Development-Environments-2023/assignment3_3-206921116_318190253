@@ -7,13 +7,16 @@
 
         <!-- {{ !$root.store.username }} -->
         <template v-if="!$root.store.username">
-          <b-nav-text><span class="nav-text">(Guest)</span></b-nav-text>
           <b-nav-item router-link :to="{ name: 'register' }">Register</b-nav-item>
           <b-nav-item router-link :to="{ name: 'login' }">Login</b-nav-item>
+          <b-nav-text class="mr-sm-2"><span class="nav-text">Guest</span></b-nav-text>
         </template>
 
         <template v-else>
-          {{ $root.store.username }}: <b-button @click="Logout">Logout</b-button>
+          <b-navbar-nav class="ml-auto">
+            <b-button @click="Logout">Logout</b-button>
+            <b-nav-text><span class="nav-text">{{ $root.store.username }}</span></b-nav-text>
+          </b-navbar-nav>
         </template>  
       </b-navbar-nav>
     </b-navbar>
@@ -49,8 +52,10 @@ export default {
 }
 
 .nav-text{
-  font-size:small;
-  margin-left: 5px;
+  font-size:medium;
+  margin: 5px;
   color: #3d4944;
 }
+
+
 </style>
