@@ -24,6 +24,7 @@ import {
   AlertPlugin,
   ToastPlugin,
   LayoutPlugin,
+  AvatarPlugin,
 } from "bootstrap-vue";
 [
   FormGroupPlugin,
@@ -36,6 +37,7 @@ import {
   AlertPlugin,
   ToastPlugin,
   LayoutPlugin,
+  AvatarPlugin,
 ].forEach((x) => Vue.use(x));
 Vue.use(Vuelidate);
 
@@ -70,17 +72,19 @@ const shared_data = {
   username: localStorage.username,
   server_domain: "http://localhost",
   login(username) {
+    localStorage.clear(); //check for problems!!!!
     localStorage.setItem("username", username);
     this.username = username;
     console.log("login", this.username);
   },
   logout() {
     console.log("logout");
-    localStorage.removeItem("username");
+    //localStorage.removeItem("username");
+    localStorage.clear(); //check for problems!!!!
     this.username = undefined;
   },
 };
-console.log(shared_data);
+//console.log(shared_data);
 // Vue.prototype.$root.store = shared_data;
 
 new Vue({

@@ -1,9 +1,9 @@
 <template>
   <div class="container">
-    <h1 class="title">Main Page</h1>
+    <h1 class="bd-content-title">Main Page</h1>
     <RecipePreviewList title="Randome Recipes" class="RandomRecipes center" />
     <router-link v-if="!$root.store.username" to="/login" tag="button">You need to Login to vue this</router-link>
-    {{ !$root.store.username }}
+    <!-- {{ !$root.store.username }} -->
     <RecipePreviewList
       title="Last Viewed Recipes"
       :class="{
@@ -31,6 +31,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.title{
+  text-align: center;
+}
 .RandomRecipes {
   margin: 10px 0 10px;
 }

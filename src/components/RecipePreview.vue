@@ -1,35 +1,64 @@
 <template>
-  <router-link
-    :to="{ name: 'recipe', params: { recipeId: recipe.id } }"
-    class="recipe-preview"
-  >
-    <div class="recipe-body">
-      <img v-if="image_load" :src="recipe.image" class="recipe-image" />
+  <!-- <router-link
+    :to="{ name: 'recipe', params: { recipeId: recipe.id } }"  > -->
+    <!-- <div  class="text-center my-3"> -->
+      <div class ="card-container">
+        <b-card 
+          :title="recipe.title"
+          :img-src="recipe.image"
+          img-alt="Image"
+          img-top
+          tag="article"
+          style="max-width: 20rem;"
+          class="mb-2"
+          height="100px"
+          border-variant="dark"
+        >
+          <b-card-text>
+            {{ recipe.readyInMinutes }} minutes <br>
+            {{ recipe.aggregateLikes }} likes <br>
+              
+            <b-avatar v-if = recipe.vegan variant="success" size="3.5em" style="font-size: 14px;">Vegan</b-avatar>
+            <b-avatar v-else-if = recipe.glutenFree variant="success" size="3.5em" style="font-size: 14px;">Gluten<br>Free</b-avatar>
+            <b-avatar v-else-if = recipe.vegetarian variant="success" size="3.5em" style="font-size: 14px;"> Veggie</b-avatar>
+          </b-card-text>
+          
+          <b-button variant="outline-secondary" @click="clicked">View Recipe
+          </b-button>
+          <small v-if= "watched" class="text-muted" style="margin: 25px;">👁 Watched</small>
+          
+        </b-card>
     </div>
-    <div class="recipe-footer">
-      <div :title="recipe.title" class="recipe-title">
-        {{ recipe.title }}
-      </div>
-      <ul class="recipe-overview">
-        <li>{{ recipe.readyInMinutes }} minutes</li>
-        <li>{{ recipe.aggregateLikes }} likes</li>
-      </ul>
-    </div>
-  </router-link>
+
+  <!-- </router-link> -->
 </template>
 
 <script>
+
 export default {
-  mounted() {
+    mounted() {
+    if (localStorage.getItem(`watched_${this.recipe.id}`)) {
+      this.watched = true;    
+    }
     this.axios.get(this.recipe.image).then((i) => {
       this.image_load = true;
     });
   },
   data() {
     return {
-      image_load: false
+      image_load: false,
+      watched:false
     };
   },
+  methods: 
+  {
+  clicked() {
+    localStorage.setItem(`watched_${this.recipe.id}`, 'true');
+    this.$router.push({ name: 'recipe', params: { recipeId: this.recipe.id } });
+    
+    }
+  },
+
   props: {
     recipe: {
       type: Object,
@@ -61,17 +90,39 @@ export default {
     // }
   }
 };
+
 </script>
 
 <style scoped>
-.recipe-preview {
+
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.card-container b-card {
+  flex-basis: calc(33.33% - 1rem);
+  margin-bottom: 1rem;
+}
+
+
+
+
+/* .recipe-preview {
   display: inline-block;
   width: 90%;
   height: 100%;
   position: relative;
   margin: 10px 10px;
+
 }
-.recipe-preview > .recipe-body {
+
+.b-card {
+  flex: 1 1 300px; /* Adjust the width of each card as needed 
+} */
+
+/* .recipe-preview > .recipe-body {
   width: 100%;
   height: 200px;
   position: relative;
@@ -137,5 +188,5 @@ export default {
   width: 90px;
   display: table-cell;
   text-align: center;
-}
+} */
 </style>

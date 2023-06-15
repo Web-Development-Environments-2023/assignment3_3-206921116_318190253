@@ -37,10 +37,21 @@ export default {
   methods: {
     async updateRecipes() {
       try {
+        let endpoin= '';
+
+        if (this.title==="Randome Recipes")
+          {endpoin = "/recipes/random";}
+        else if (this.title==="Last Viewed Recipes")  
+          endpoin='/users/viewed'
+
+        console.log(this.axios.defaults.withCredentials);
+
         const response = await this.axios.get(
-          this.$root.store.server_domain + "/recipes/random",
-          // "https://test-for-3-2.herokuapp.com/recipes/random"
-        );
+          this.$root.store.server_domain + endpoin,
+          {withCredentials: true}
+          );
+
+
 
         // console.log(response);
         const recipes = response.data;

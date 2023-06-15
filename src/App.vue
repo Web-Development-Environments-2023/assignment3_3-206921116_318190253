@@ -9,14 +9,12 @@
         <template v-if="!$root.store.username">
           <b-nav-item router-link :to="{ name: 'register' }">Register</b-nav-item>
           <b-nav-item router-link :to="{ name: 'login' }">Login</b-nav-item>
-          <b-nav-text class="mr-sm-2"><span class="nav-text">Guest</span></b-nav-text>
+          <b-nav-text ><span class="nav-text">Hello Guest</span></b-nav-text>
         </template>
 
         <template v-else>
-          <b-navbar-nav class="ml-auto">
-            <b-button @click="Logout">Logout</b-button>
-            <b-nav-text><span class="nav-text">{{ $root.store.username }}</span></b-nav-text>
-          </b-navbar-nav>
+          <b-nav-text><span class="nav-text">Hello {{ $root.store.username }}</span></b-nav-text>
+          <b-button @click="Logout" >Logout</b-button>
         </template>  
       </b-navbar-nav>
     </b-navbar>
@@ -33,7 +31,8 @@ export default {
       this.$root.toast("Logout", "User logged out successfully", "success");
 
       this.$router.push("/").catch(() => {
-        this.$forceUpdate();
+        //this.$forceUpdate();
+        location.reload();
       });
     }
   }
