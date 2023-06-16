@@ -1,24 +1,28 @@
 <template>
-  <div class="container">
-    <h1 class="bd-content-title">Main Page</h1>
-    <RecipePreviewList title="Randome Recipes" class="RandomRecipes center" />
-    <router-link v-if="!$root.store.username" to="/login" tag="button">You need to Login to vue this</router-link>
-    <!-- {{ !$root.store.username }} -->
-    <RecipePreviewList
-      title="Last Viewed Recipes"
-      :class="{
-        RandomRecipes: true,
-        blur: !$root.store.username,
-        center: true
-      }"
-      disabled
-    ></RecipePreviewList>
-    <!-- <div
-      style="position: absolute;top: 70%;left: 50%;transform: translate(-50%, -50%);"
-    >
-      Centeredasdasdad
-    </div>-->
-  </div>
+  <BContainer fluid>
+    <BRow>
+      
+      <BCol md="6">
+        <h1 class="bd-content-title">Main Page</h1>
+        <RecipePreviewList ref="recipePreviewList" :key="recipesReload" title="Randome Recipes" class="RandomRecipes center" />
+        <b-button variant="outline-secondary" @click="reload()">Shuffle me some recipes</b-button>
+      </BCol>
+
+      <BCol md="6">
+        <b-button  variant="outline-secondary" v-if="!$root.store.username" router-link :to="{ name: 'login' }" >You need to Login to vue this</b-button>
+        <RecipePreviewList
+          title="Last Viewed Recipes"
+          :class="{
+            RandomRecipes: true,
+            blur: !$root.store.username,
+            center: true
+          }"
+          disabled
+        ></RecipePreviewList>
+      </BCol>
+
+    </BRow>
+  </BContainer>
 </template>
 
 <script>
@@ -26,6 +30,18 @@ import RecipePreviewList from "../components/RecipePreviewList";
 export default {
   components: {
     RecipePreviewList
+  },
+  data(){
+    return{
+      recipesReload:0,
+    };
+  },
+
+  methods:{
+    reload(){
+      this.recipesReload++;
+      this.$refs.recipePreviewList.reload();
+    }
   }
 };
 </script>
@@ -35,7 +51,7 @@ export default {
   text-align: center;
 }
 .RandomRecipes {
-  margin: 10px 0 10px;
+  padding: 5%;
 }
 .blur {
   -webkit-filter: blur(5px); /* Safari 6.0 - 9.0 */

@@ -27,13 +27,16 @@ export default {
   },
   data() {
     return {
-      recipes: []
+      recipes: [],
+      shuffle: false
     };
   },
-  mounted() {
-    this.updateRecipes();
-    
+
+  mounted() 
+  {
+    this.updateRecipes();    
   },
+
   methods: {
     async updateRecipes() {
       try {
@@ -44,30 +47,46 @@ export default {
         else if (this.title==="Last Viewed Recipes")  
           endpoin='/users/viewed'
 
-        console.log(this.axios.defaults.withCredentials);
-
-        const response = await this.axios.get(
+        const storedRecipes = localStorage.getItem('savedRecipes');
+        if(storedRecipes && endpoin === "/recipes/random" && this.shuffle===false)
+        {
+          this.recipes = JSON.parse(storedRecipes);
+        }
+        else
+        {
+          const response = await this.axios.get(
           this.$root.store.server_domain + endpoin,
           {withCredentials: true}
           );
 
+          const recipes = response.data;
+          this.recipes = [];
+          this.recipes.push(...recipes);
+          
+          if (endpoin === "/recipes/random")
+          {localStorage.setItem('savedRecipes', JSON.stringify(this.recipes));
+          this.shuffle===false;}
+        }
+      
 
 
-        // console.log(response);
-        const recipes = response.data;
-        this.recipes = [];
-        this.recipes.push(...recipes);
-        console.log(this.recipes);
       } catch (error) {
         console.log(error);
       }
+    },
+
+    reload(){
+      this.shuffle=true;
+      this.updateRecipes();  
     }
+
+    
   }
 };
 </script>
 
 <style lang="scss" scoped>
-.container {
-  min-height: 400px;
-}
+// .container {
+//   min-height: 400px;
+// }
 </style>
