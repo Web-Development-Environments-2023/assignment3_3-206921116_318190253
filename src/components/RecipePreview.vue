@@ -10,23 +10,22 @@
           img-top
           tag="article"
           style="max-width: 20rem;"
-          class="mb-2"
           height="100px"
-          border-variant="dark"
+          @click="clicked"
         >
           <b-card-text>
             {{ recipe.readyInMinutes }} minutes <br>
             {{ recipe.aggregateLikes }} likes <br>
               
             <b-avatar v-if = recipe.vegan variant="success" size="3.5em" style="font-size: 14px;">Vegan</b-avatar>
-            <b-avatar v-else-if = recipe.glutenFree variant="success" size="3.5em" style="font-size: 14px;">Gluten<br>Free</b-avatar>
             <b-avatar v-else-if = recipe.vegetarian variant="success" size="3.5em" style="font-size: 14px;"> Veggie</b-avatar>
-          </b-card-text>
-          
-          <b-button variant="outline-secondary" @click="clicked">View Recipe
-          </b-button>
-          <small v-if= "watched" class="text-muted" style="margin: 25px;">👁 Watched</small>
-          
+            <b-avatar v-else-if = recipe.glutenFree variant="success" size="3.5em" style="font-size: 14px;">Gluten<br>Free</b-avatar>
+            <b-avatar v-else-if = !recipe.glutenFree variant="danger" size="3.5em" style="font-size: 14px;">Gluten</b-avatar>
+
+            <div class="d-flex justify-content-end">
+              <small v-if="watched" class="text-muted">👁 Watched</small>
+            </div>   
+          </b-card-text> 
         </b-card>
     </div>
 
@@ -55,7 +54,6 @@ export default {
   clicked() {
     localStorage.setItem(`watched_${this.recipe.id}`, 'true');
     this.$router.push({ name: 'recipe', params: { recipeId: this.recipe.id } });
-    
     }
   },
 
@@ -99,6 +97,7 @@ export default {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
+  cursor: pointer;
 }
 
 .card-container b-card {
