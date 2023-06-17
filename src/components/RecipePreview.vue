@@ -15,7 +15,7 @@
         >
           <b-card-text>
             {{ recipe.readyInMinutes }} minutes <br>
-            {{ recipe.aggregateLikes }} likes <br>
+            {{ recipe.popularity }} likes <br>
               
             <b-avatar v-if = recipe.vegan variant="success" size="3.5em" style="font-size: 14px;">Vegan</b-avatar>
             <b-avatar v-else-if = recipe.vegetarian variant="success" size="3.5em" style="font-size: 14px;"> Veggie</b-avatar>
@@ -54,6 +54,10 @@ export default {
   clicked() {
     localStorage.setItem(`watched_${this.recipe.id}`, 'true');
     this.$router.push({ name: 'recipe', params: { recipeId: this.recipe.id } });
+
+
+
+
     }
   },
 

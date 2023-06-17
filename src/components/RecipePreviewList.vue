@@ -63,8 +63,9 @@ export default {
           this.recipes = [];
           this.recipes.push(...recipes);
           
+          console.log(this.recipes)
           if (endpoin === "/recipes/random")
-          {localStorage.setItem('savedRecipes', JSON.stringify(this.recipes));
+          {localStorage.setItem('savedRecipes', JSON.stringify(recipes));
           this.shuffle===false;}
         }
       
