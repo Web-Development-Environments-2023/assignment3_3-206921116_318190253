@@ -4,7 +4,7 @@
       
       <BCol md="6">
         <h1 class="bd-content-title">Main Page</h1>
-        <RecipePreviewList ref="recipePreviewList" :key="recipesReload" title="Random Recipes" class="RandomRecipes center" />
+        <RecipePreviewList ref="recipePreviewList" title="Random Recipes" class="RandomRecipes center" />
         <b-button variant="outline-secondary" @click="reload()">Shuffle me some recipes</b-button>
       </BCol>
 
@@ -31,15 +31,10 @@ export default {
   components: {
     RecipePreviewList
   },
-  data(){
-    return{
-      recipesReload:0,
-    };
-  },
 
   methods:{
     reload(){
-      this.recipesReload++;
+      
       this.$refs.recipePreviewList.reload();
     }
   }

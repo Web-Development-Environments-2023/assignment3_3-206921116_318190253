@@ -2,31 +2,51 @@
   <!-- <router-link
     :to="{ name: 'recipe', params: { recipeId: recipe.id } }"  > -->
     <!-- <div  class="text-center my-3"> -->
-      <div class ="card-container">
-        <b-card 
+      <div> 
+        
+        <!-- <b-card 
           :title="recipe.title"
           :img-src="recipe.image"
           img-alt="Image"
           img-top
-          tag="article"
+          no-body
           style="max-width: 20rem;"
-          height="100px"
+          @click="clicked"
+        > -->
+
+        <b-card 
+          img-alt="Image"
+          img-top
+          no-body
+          style="max-width: 20rem;"
           @click="clicked"
         >
-          <b-card-text>
-            {{ recipe.readyInMinutes }} minutes <br>
-            {{ recipe.popularity }} likes <br>
-              
-            <b-avatar v-if = recipe.vegan variant="success" size="3.5em" style="font-size: 14px;">Vegan</b-avatar>
-            <b-avatar v-else-if = recipe.vegetarian variant="success" size="3.5em" style="font-size: 14px;"> Veggie</b-avatar>
-            <b-avatar v-else-if = recipe.glutenFree variant="success" size="3.5em" style="font-size: 14px;">Gluten<br>Free</b-avatar>
-            <b-avatar v-else-if = !recipe.glutenFree variant="danger" size="3.5em" style="font-size: 14px;">Gluten</b-avatar>
 
-            <div class="d-flex justify-content-end">
-              <small v-if="watched" class="text-muted">👁 Watched</small>
-            </div>   
-          </b-card-text> 
-        </b-card>
+        <b-card-img style="cursor: pointer;" :src="recipe.image" alt="Image" bottom></b-card-img>
+
+          <b-card-body>
+            <b-card-title>{{recipe.title}}</b-card-title>
+            <b-card-text>
+              {{ recipe.readyInMinutes }} minutes <br>
+              {{ recipe.popularity }} likes <br>
+                
+              <b-avatar v-if = recipe.vegan variant="success" size="3.5em" style="font-size: 14px;">Vegan</b-avatar>
+              <b-avatar v-else-if = recipe.vegetarian variant="success" size="3.5em" style="font-size: 14px;"> Veggie</b-avatar>
+              <b-avatar v-else-if = recipe.glutenFree variant="success" size="3.5em" style="font-size: 14px;">Gluten<br>Free</b-avatar>
+              <b-avatar v-else-if = !recipe.glutenFree variant="danger" size="3.5em" style="font-size: 14px;">Gluten</b-avatar>
+
+              <!-- <div class="d-flex justify-content-end">
+                <small v-if="watched" class="text-muted">👁 Watched</small>
+              </div>      -->
+            </b-card-text> 
+            <div class="d-flex justify-content-end"> <b-icon-bookmark ></b-icon-bookmark> </div>
+          </b-card-body>
+          <b-card-footer v-if="watched">
+            <small class="text-muted">👁 Watched</small>
+          </b-card-footer>
+        
+        
+      </b-card>
     </div>
 
   <!-- </router-link> -->
@@ -97,22 +117,7 @@ export default {
 
 <style scoped>
 
-.card-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  cursor: pointer;
-}
-
-.card-container b-card {
-  flex-basis: calc(33.33% - 1rem);
-  margin-bottom: 1rem;
-}
-
-
-
-
-/* .recipe-preview {
+.recipe-preview {
   display: inline-block;
   width: 90%;
   height: 100%;
@@ -122,10 +127,10 @@ export default {
 }
 
 .b-card {
-  flex: 1 1 300px; /* Adjust the width of each card as needed 
-} */
+  flex: 1 1 300px;  
+} 
 
-/* .recipe-preview > .recipe-body {
+ .recipe-preview > .recipe-body {
   width: 100%;
   height: 200px;
   position: relative;
@@ -191,5 +196,5 @@ export default {
   width: 90px;
   display: table-cell;
   text-align: center;
-} */
+} 
 </style>
