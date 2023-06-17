@@ -42,7 +42,7 @@ export default {
       try {
         let endpoin= '';
 
-        if (this.title==="Randome Recipes")
+        if (this.title==="Random Recipes")
           {endpoin = "/recipes/random";}
         else if (this.title==="Last Viewed Recipes")  
           endpoin='/users/viewed'

@@ -4,9 +4,9 @@
       <b-navbar-nav>
         <b-nav-item router-link :to="{ name: 'main' }">Vue Recipes</b-nav-item>
         <b-nav-item router-link :to="{ name: 'search' }">Search</b-nav-item>
-        <b-nav-item router-link :to="{ name: 'register' }">About</b-nav-item>
+        <!-- need to change link -->
+        <b-nav-item router-link :to="{ name: 'main' }">About</b-nav-item> 
 
-        <!-- {{ !$root.store.username }} -->
         <template v-if="!$root.store.username">
           <b-nav-item router-link :to="{ name: 'register' }">Register</b-nav-item>
           <b-nav-item router-link :to="{ name: 'login' }">Login</b-nav-item>
@@ -14,9 +14,9 @@
         </template>
 
         <template v-else>
-            <!-- <b-nav-text><span class="nav-text">Hello {{ $root.store.username }}</span></b-nav-text> -->
+          <!-- need to change link -->
+          <b-nav-item router-link :to="{ name: 'main' }">Create Recipe</b-nav-item>
           <b-nav-item-dropdown right>
-            <!-- Using 'button-content' slot -->
             <template #button-content>
               <em>{{$root.store.username}}</em>
             </template>
