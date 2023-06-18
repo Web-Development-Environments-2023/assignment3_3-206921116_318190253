@@ -1,32 +1,15 @@
 <template>
   <div>
-    <b-carousel
-      id="carousel-fade"
-      style="text-shadow: 0px 0px 2px #000"
-      fade
-      indicators
-      img-width="1024"
-      img-height="480"
-    >
-      <b-carousel-slide
-        caption="First Slide"
-        img-src="https://picsum.photos/1024/480/?image=10"
-      ></b-carousel-slide>
-      <b-carousel-slide
-        caption="Second Slide"
-        img-src="https://picsum.photos/1024/480/?image=12"
-      ></b-carousel-slide>
-      <b-carousel-slide
-        caption="Third Slide"
-        img-src="https://picsum.photos/1024/480/?image=22"
-      ></b-carousel-slide>
-    </b-carousel>
-
     <b-container fluid class="font">
       <h1 class="title">Main Page</h1>
 
-      <b-row>
+      <b-row class="justify-content-center">
         <b-col md="6">
+          <b-col offset-md="4"> 
+            <b-button variant="outline-secondary" @click="reload()">
+              Shuffle me some recipes
+            </b-button>
+          </b-col>
           <RecipePreviewList
             ref="recipePreviewList"
             title="Random Recipes"
@@ -35,14 +18,16 @@
         </b-col>
 
         <b-col md="6">
-          <b-button
-            variant="outline-secondary"
-            v-if="!$root.store.username"
-            router-link
-            :to="{ name: 'login' }"
-          >
-            You need to Login to view this
-          </b-button>
+          <b-col offset-md="4"> 
+            <b-button
+              variant="outline-secondary"
+              v-if="!$root.store.username"
+              router-link
+              :to="{ name: 'login' }"
+            >
+              You need to Login to view this
+            </b-button>
+          </b-col>
           <RecipePreviewList
             title="Last Viewed Recipes"
             :class="{
@@ -54,12 +39,6 @@
           ></RecipePreviewList>
         </b-col>
       </b-row>
-
-      <b-container class="fixed-button-container">
-        <b-button variant="outline-secondary" class="fixed-button" @click="reload()">
-          Shuffle me some recipes
-        </b-button>
-      </b-container>
     </b-container>
   </div>
 </template>
@@ -102,9 +81,4 @@ export default {
   cursor: default;
 }
 
-.fixed-button-container {
-  position: fixed;
-  bottom: 170px;
-  right: 420px;
-}
 </style>
