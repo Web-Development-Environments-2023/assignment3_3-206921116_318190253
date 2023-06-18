@@ -1,11 +1,35 @@
 <template>
-  <BContainer fluid>
+
+<div>
+  <b-carousel
+    id="carousel-fade"
+    style="text-shadow: 0px 0px 2px #000"
+    fade
+    indicators
+    img-width="1024"
+    img-height="480"
+  >
+    <b-carousel-slide
+      caption="First Slide"
+      img-src="https://picsum.photos/1024/480/?image=10"
+    ></b-carousel-slide>
+    <b-carousel-slide
+      caption="Second Slide"
+      img-src="https://picsum.photos/1024/480/?image=12"
+    ></b-carousel-slide>
+    <b-carousel-slide
+      caption="Third Slide"
+      img-src="https://picsum.photos/1024/480/?image=22"
+    ></b-carousel-slide>
+  </b-carousel>
+</div>
+  <BContainer fluid class="font">
+    <h1 class="title">Main Page</h1>
+
     <BRow>
-      
+
       <BCol md="6">
-        <h1 class="bd-content-title">Main Page</h1>
         <RecipePreviewList ref="recipePreviewList" title="Random Recipes" class="RandomRecipes center" />
-        <b-button variant="outline-secondary" @click="reload()">Shuffle me some recipes</b-button>
       </BCol>
 
       <BCol md="6">
@@ -22,6 +46,11 @@
       </BCol>
 
     </BRow>
+
+    <BContainer class="fixed-button-container">
+        <b-button variant="outline-secondary" class="fixed-button" @click="reload()">Shuffle me some recipes</b-button>
+    </BContainer>
+
   </BContainer>
 </template>
 
@@ -42,6 +71,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+.font{
+  font-family: Helvetica;
+}
 .title{
   text-align: center;
 }
@@ -55,5 +88,11 @@ export default {
 ::v-deep .blur .recipe-preview {
   pointer-events: none;
   cursor: default;
+}
+
+.fixed-button-container {
+  position: fixed;
+  bottom: 170px;
+  right: 420px;
 }
 </style>

@@ -5,11 +5,9 @@
       <slot></slot>
     </h3>
     <b-row>
-      <b-col v-for="r in recipes" :key="r.id">
-        <div class="d-flex align-items-start">
-          <RecipePreview class="recipePreview" :recipe="r" />
+      <div class="recipeGrid">
+        <RecipePreview v-for="r in recipes" :key="r.id" :recipe="r" class="recipePreview" />
       </div>
-      </b-col>
     </b-row>
   </b-container>
 </template>
@@ -89,7 +87,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-// .container {
-//   min-height: 400px;
-// }
+.recipeGrid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+.recipePreview {
+  flex-basis: calc(33.33% - 20px);
+  margin: 10px;
+}
 </style>
