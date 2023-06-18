@@ -39,6 +39,7 @@
   methods: {
       async updateRecipes() {
         try {
+          console.log("im trying")
           const response = await this.axios.get(
           this.$root.store.server_domain + '/users/getmyrecipes',
             {
@@ -47,6 +48,7 @@
           );
   
           const recipes = response.data;
+          console.log("these are the users:")
           console.log(recipes)
           this.recipes = [];
           this.recipes.push(...recipes);

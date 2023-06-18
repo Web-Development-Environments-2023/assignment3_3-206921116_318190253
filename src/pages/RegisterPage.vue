@@ -26,6 +26,43 @@
       </b-form-group>
 
       <b-form-group
+        id="input-group-firstName"
+        label-cols-sm="3"
+        label="First Name:"
+        label-for="firstName"
+      >
+        <b-form-input
+          id="firstName"
+          v-model="$v.form.firstName.$model"
+          type="text"
+          :state="validateState('firstName')"
+        ></b-form-input>
+        <b-form-invalid-feedback v-if="!$v.form.firstName.required">
+          First Name is required
+        </b-form-invalid-feedback>
+        <!-- Add other validation feedback messages if needed -->
+      </b-form-group>
+
+      <b-form-group
+        id="input-group-lastName"
+        label-cols-sm="3"
+        label="Last Name:"
+        label-for="lastName"
+      >
+        <b-form-input
+          id="lastName"
+          v-model="$v.form.lastName.$model"
+          type="text"
+          :state="validateState('lastName')"
+        ></b-form-input>
+        <b-form-invalid-feedback v-if="!$v.form.lastName.required">
+          Last Name is required
+        </b-form-invalid-feedback>
+        <!-- Add other validation feedback messages if needed -->
+      </b-form-group>
+
+
+      <b-form-group
         id="input-group-country"
         label-cols-sm="3"
         label="Country:"
@@ -41,6 +78,27 @@
           Country is required
         </b-form-invalid-feedback>
       </b-form-group>
+
+      <b-form-group
+        id="input-group-email"
+        label-cols-sm="3"
+        label="Email:"
+        label-for="email"
+      >
+        <b-form-input
+          id="email"
+          v-model="$v.form.email.$model"
+          type="email"
+          :state="validateState('email')"
+        ></b-form-input>
+        <b-form-invalid-feedback v-if="!$v.form.email.required">
+          Email is required
+        </b-form-invalid-feedback>
+        <b-form-invalid-feedback v-else-if="!$v.form.email.email">
+          Please enter a valid email address
+        </b-form-invalid-feedback>
+      </b-form-group>
+
 
       <b-form-group
         id="input-group-Password"
@@ -62,9 +120,9 @@
           For that, your password should be also:
         </b-form-text>
         <b-form-invalid-feedback
-          v-if="$v.form.password.required && !$v.form.password.length"
-        >
-          Have length between 5-10 characters long
+          v-if="$v.form.password.required && !$v.form.password.length || !$v.form.password.hasDigit || !$v.form.password.hasSpecialChar">
+          Have length between 5-10 characters long <br/>
+          Contains a special char and at least one digit
         </b-form-invalid-feedback>
       </b-form-group>
 
@@ -127,7 +185,8 @@ import {
   maxLength,
   alpha,
   sameAs,
-  email
+  email,
+  regex
 } from "vuelidate/lib/validators";
 
 export default {
@@ -156,12 +215,24 @@ export default {
         length: (u) => minLength(3)(u) && maxLength(8)(u),
         alpha
       },
+      firstName: {
+        required
+      },
+      lastName: {
+        required
+      },
       country: {
         required
       },
+      email: {
+        required,
+        email
+      },
       password: {
         required,
-        length: (p) => minLength(5)(p) && maxLength(10)(p)
+        length: (p) => minLength(5)(p) && maxLength(10)(p),
+        hasDigit: (p) => /.\d./.test(p),
+        hasSpecialChar: (p) => /.[^a-zA-Z0-9]./.test(p)
       },
       confirmedPassword: {
         required,
@@ -187,7 +258,12 @@ export default {
 
           {
             username: this.form.username,
-            password: this.form.password
+            password: this.form.password,
+            firstName: this.form.firstName,
+            lastName: this.form.lastName,
+            country: this.form.country,
+            email: this.form.email,
+
           }
         );
         this.$router.push("/login");

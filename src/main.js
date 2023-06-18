@@ -15,6 +15,7 @@ import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-vue/dist/bootstrap-vue.css";
 import 'bootstrap-vue/dist/bootstrap-vue-icons.min.css'
 
+
 import {
   FormGroupPlugin,
   FormPlugin,
@@ -28,6 +29,7 @@ import {
   LayoutPlugin,
   AvatarPlugin,
   BootstrapVueIcons ,
+  ModalPlugin 
 } from "bootstrap-vue";
 [
   FormGroupPlugin,
@@ -42,6 +44,7 @@ import {
   LayoutPlugin,
   AvatarPlugin,
   BootstrapVueIcons,
+  ModalPlugin 
 ].forEach((x) => Vue.use(x));
 Vue.use(Vuelidate);
 

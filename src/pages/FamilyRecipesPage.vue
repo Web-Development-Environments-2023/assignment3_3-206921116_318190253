@@ -9,8 +9,8 @@
   </template>
   
   <script>
-  export default {
-    name: "MyFavoritesPage",
+    export default {
+    name: "FamilyRecipes",
   };
   </script>
   
