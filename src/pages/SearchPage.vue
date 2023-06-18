@@ -4,7 +4,8 @@
 
     <div class="search-container">
       <div class="search-input">
-        <b-form-input v-model="search" placeholder="Enter recipe name" col="2"></b-form-input>
+        <b-form-input v-model="searchQuery" placeholder="Enter recipe name" col="2"></b-form-input>
+        
         <b-button @click="updateRecipes()">Search</b-button>
       </div>
       <div class="select-inputs">
@@ -13,7 +14,10 @@
         <b-form-select v-model="intoleranceSelected" :options="intoleranceOptions"></b-form-select>
         <b-form-select v-model="numberSelected" :options="numberOptions"></b-form-select> 
         <b-form-select v-model="filterSelected" :options="filterOptions" @change="sortRecipes()"></b-form-select>
+        
       </div>
+      <p> Last search: {{ lastSearch }}</p>
+
     </div>
 
     <b-container>
@@ -46,9 +50,10 @@ components: {
   },
 data(){
   return {
-    search:'', 
+    searchQuery:'', 
     recipes: [],
     showNoRecipesAlert:false,
+    lastSearch:'',
 
     cusineSelected: null,
     cusineOptions: [
@@ -68,9 +73,9 @@ data(){
     numberSelected: null,
     numberOptions: [
       { value: null, text: 'Results count' },
-      { value: 'a', text: '5' },
-      { value: 'b', text: '10' },
-      { value: 'a', text: '15' },
+      { value: '5', text: '5' },
+      { value: '10', text: '10' },
+      { value: '15', text: '15' },
     ],
 
     filterSelected: null,
@@ -82,14 +87,23 @@ data(){
       
   }
 },
+mounted(){
+  if (localStorage.getItem(`lastSearch`)) {
+      this.lastSearch = localStorage.getItem(`lastSearch`);   
+    }
+  this.showNoRecipesAlert=false
+},
 methods: {
     async updateRecipes() {
+      this.lastSearch = this.searchQuery;
+      localStorage.setItem(`lastSearch`,  this.lastSearch);
+      this.showNoRecipesAlert=false
       try {
         const response = await this.axios.get(
         this.$root.store.server_domain + '/recipes/complexSearch',
           {
             params: {
-              query: this.search,
+              query: this.searchQuery,
               cuisine: this.cusineSelected,
               intolerance: this.intoleranceSelected,
               diet: this.dietSelected,

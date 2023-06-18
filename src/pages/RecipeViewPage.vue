@@ -11,6 +11,7 @@
             <div class="mb-3">
               <div>Ready in {{ recipe.readyInMinutes }} minutes</div>
               <div>Likes: {{ recipe.aggregateLikes }} likes</div>
+              <div>Servings: {{ recipe.servings }}</div>
             </div>
             Ingredients:
             <ul>
@@ -70,7 +71,7 @@ export default {
         this.$router.replace("/NotFound");
         return;
       }
-      console.log(response.data.analyzedInstructions)
+      console.log(response.data)
       let {
         analyzedInstructions,
         instructions,
@@ -78,7 +79,8 @@ export default {
         aggregateLikes,
         readyInMinutes,
         image,
-        title
+        title,
+        servings
       } = response.data;
 
       let _instructions = analyzedInstructions
@@ -96,7 +98,8 @@ export default {
         aggregateLikes,
         readyInMinutes,
         image,
-        title
+        title,
+        servings
       };
 
       this.recipe = _recipe;
