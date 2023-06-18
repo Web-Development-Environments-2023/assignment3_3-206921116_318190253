@@ -17,11 +17,11 @@
             <template #button-content>
               <em>{{$root.store.username}}</em>
             </template>
-            <b-dropdown-item href="#">My recipes</b-dropdown-item>
-            <b-dropdown-item href="#">My favorite recipes</b-dropdown-item>
-            <b-dropdown-item href="#">My family recipes</b-dropdown-item>
+            <b-dropdown-item router-link :to="{ name: 'MyRecipes' }">My recipes</b-dropdown-item>
+            <b-dropdown-item router-link :to="{ name: 'favorites' }">My favorite recipes</b-dropdown-item>
+            <b-dropdown-item router-link :to="{ name: 'FamilyRecipes' }">My family recipes</b-dropdown-item>
           </b-nav-item-dropdown>
-          <b-button pill variant="outline-secondary" @click="logout">Logout</b-button>
+          <b-button variant="outline-secondary" @click="logout">Logout</b-button>
         </template>
       </b-navbar-nav>
     </b-navbar>
