@@ -12,7 +12,7 @@
         <b-form-select v-model="dietSelected" :options="dietOptions"></b-form-select>
         <b-form-select v-model="intoleranceSelected" :options="intoleranceOptions"></b-form-select>
         <b-form-select v-model="numberSelected" :options="numberOptions"></b-form-select> 
-        <b-form-select v-model="filterSelected" :options="filterOptions"></b-form-select>
+        <b-form-select v-model="filterSelected" :options="filterOptions" @change="sortRecipes()"></b-form-select>
       </div>
     </div>
 
@@ -82,20 +82,6 @@ data(){
       
   }
 },
-computed:{
-  getSortedRecipes() {
-      if (this.filterSelected === 'a') {
-        // Sort by preparation time
-        return this.recipes.sort((a, b) => a.readyInMinutes - b.readyInMinutes);
-      } else if (this.filterSelected === 'b') {
-        // Sort by popularity
-        return this.recipes.sort((a, b) => a.popularity - b.popularity);
-      } else {
-        // Default order or no filter selected
-        return this.recipes;
-      }
-    },
-},
 methods: {
     async updateRecipes() {
       try {
@@ -124,9 +110,23 @@ methods: {
       catch (error) {
         console.log(error);
       }
-    }
-  },
+    },
+  
+  sortRecipes() {
+      // Sort the recipes based on the selected filter
+      switch (this.filterSelected) {
+        case 'a':
+        console.log(this.recipes.sort((a, b) => a.readyInMinutes - b.readyInMinutes));
+        return this.recipes.sort((a, b) => a.readyInMinutes - b.readyInMinutes);
+          
+        case 'b':
+          return this.recipes.sort((a, b) => b.popularity - a.popularity);
+        default:
+          return this.recipes;
+      }
+    },
 
+  },
 
 }
 </script>
