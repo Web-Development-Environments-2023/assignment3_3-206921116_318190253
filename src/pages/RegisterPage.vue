@@ -231,8 +231,8 @@ export default {
       password: {
         required,
         length: (p) => minLength(5)(p) && maxLength(10)(p),
-        hasDigit: (p) => /.\d./.test(p),
-        hasSpecialChar: (p) => /.[^a-zA-Z0-9]./.test(p)
+        hasDigit: (p) => /\d/.test(p),
+        hasSpecialChar: (p) => /[^a-zA-Z0-9]/.test(p),
       },
       confirmedPassword: {
         required,
