@@ -4,6 +4,8 @@
       <b-navbar-nav>
         <b-nav-item router-link :to="{ name: 'main' }">Vue Recipes</b-nav-item>
         <b-nav-item router-link :to="{ name: 'search' }">Search</b-nav-item>
+        <b-nav-item router-link :to="{ name: 'about' }">About</b-nav-item>
+
 
         <template v-if="!$root.store.username">
           <b-nav-item router-link :to="{ name: 'register' }">Register</b-nav-item>
@@ -27,37 +29,31 @@
     </b-navbar>
 
     <router-view />
+    <div>
+      <b-modal v-model="isModalVisible" id="modal-1" title="Add Recipe" hide-footer>
+        <form class="modal-form" @submit.prevent="saveRecipe">
+          <label for="recipeName">Name:</label>
+          <input type="text" id="recipeName" v-model="recipe.name" required>
+          <label for="image">Image:</label>
+          <input type="url" id="image" v-model="recipe.image" required>
+          <label for="duration">Duration (minutes):</label>
+          <input type="number" id="duration" v-model="recipe.duration" required>
+          <div class="checkbox-group">
+  <br>
+  <br>
+  <label for="vegan">Vegan</label>
+  <input type="checkbox" id="vegan" v-model="recipe.vegan">
 
-    <b-modal v-if="isModalVisible" @hidden="resetRecipe" title="Add Recipe">
-      <form @submit.prevent="saveRecipe">
-        <label for="recipeName">Name:</label>
-        <input type="text" id="recipeName" v-model="recipe.name" required>
+  <label for="vegetarian">Vegetarian</label>
+  <input type="checkbox" id="vegetarian" v-model="recipe.vegetarian">
 
-        <label for="image">Image:</label>
-        <input type="url" id="image" v-model="recipe.image" required>
+  <label for="glutenFree">Gluten Free</label>
+  <input type="checkbox" id="glutenFree" v-model="recipe.glutenFree">
+</div>
 
-        <label for="duration">duration (minutes):</label>
-        <input type="number" id="duration" v-model="recipe.duration" required>
-
-        <div>
-          <input type="checkbox" id="vegan" v-model="recipe.vegan">
-          <label for="vegan">Vegan</label>
-        </div>
-
-        <div>
-          <input type="checkbox" id="vegetarian" v-model="recipe.vegetarian">
-          <label for="vegetarian">Vegetarian</label>
-        </div>
-
-        <div>
-          <input type="checkbox" id="glutenFree" v-model="recipe.glutenFree">
-          <label for="glutenFree">glutenFree</label>
-        </div>
-
-        <label for="instructions">instructions:</label>
-        <input type="text" id="instructions" v-model="recipe.instructions" required>
-        <br>
-        <label for="ingredients">Ingredients:</label>
+          <label for="instructions">Instructions:</label>
+          <input type="text" id="instructions" v-model="recipe.instructions" required>
+          <label for="ingredients">Ingredients:</label>
           <div>
             <div v-for="(ingredient, index) in recipe.ingredients" :key="index">
               <input type="text" v-model="ingredient.name" placeholder="Name" required>
@@ -68,13 +64,14 @@
             <button @click="addIngredient">Add Ingredient</button>
           </div>
 
-        <label for="servings">servings:</label>
-        <input type="number" id="servings" v-model="recipe.servings" required>
+          <label for="servings">Servings:</label>
+          <input type="number" id="servings" v-model="recipe.servings" required>
 
-        <b-button type="submit" variant="primary">Save</b-button>
-        <b-button variant="secondary" @click="hideModal">Cancel</b-button>
-      </form>
-    </b-modal>
+          <b-button type="submit" variant="primary">Save</b-button>
+          <b-button variant="secondary" @click="hideModal">Cancel</b-button>
+        </form>
+      </b-modal>
+    </div>
   </div>
 </template>
 
@@ -85,8 +82,8 @@ export default {
       isModalVisible: false,
       recipe: {
         name: '',
-        image: '', // Use "image" instead of "imageUrl"
-        prepTime: null,
+        image: '',
+        duration: null,
         vegan: false,
         vegetarian: false,
         glutenFree: false,
@@ -106,36 +103,35 @@ export default {
       this.isModalVisible = false;
     },
     async saveRecipe() {
-      // Perform save logic here
       try {
-    const { name, image, duration, vegan, vegetarian, glutenFree, instructions,ingredients, servings} = this.recipe;
+        const { name, image, duration, vegan, vegetarian, glutenFree, instructions, ingredients, servings } = this.recipe;
 
-    const response = await this.axios.post(
-      this.$root.store.server_domain + "/users/addUserRecipe",
-      {
-        name:name,
-        image:image,
-        duration:duration,
-        likes:0,
-        vegan:vegan ? 1 : 0,
-        vegetarian:vegetarian ? 1 : 0,
-        glutenFree:glutenFree ? 1 : 0,
-        instructions:instructions, 
-        servings:servings,
-        ingredients:ingredients
-      }, { withCredentials: true }
-    );
+        const response = await this.axios.post(
+          this.$root.store.server_domain + "/users/addUserRecipe",
+          {
+            name: name,
+            image: image,
+            duration: duration,
+            likes: 0,
+            vegan: vegan ? 1 : 0,
+            vegetarian: vegetarian ? 1 : 0,
+            glutenFree: glutenFree ? 1 : 0,
+            instructions: instructions,
+            servings: servings,
+            ingredients: ingredients
+          },
+          { withCredentials: true }
+        );
 
-    // Handle the response from the server
-    // For example, redirect to a success page or show a success message
+        // Handle the response from the server
+        // For example, redirect to a success page or show a success message
 
-    this.hideModal();
-  } catch (error) {
-    console.log(this.recipe)
+        this.hideModal();
+      } catch (error) {
+        console.log(this.recipe);
         console.log(error.response);
-        this.form.submitError = err.response.data.message;
+        this.form.submitError = error.response.data.message;
       }
-      this.hideModal();
     },
     resetRecipe() {
       this.recipe = {
@@ -153,17 +149,16 @@ export default {
     },
 
     addIngredient() {
-    this.recipe.ingredients.push({
-      name: '',
-      unit: '',
-      amount: null
-    });
-    console.log(this.recipe.ingredients)
-  },
+      this.recipe.ingredients.push({
+        name: '',
+        unit: '',
+        amount: null
+      });
+    },
 
-  removeIngredient(index) {
-    this.recipe.ingredients.splice(index, 1);
-  },
+    removeIngredient(index) {
+      this.recipe.ingredients.splice(index, 1);
+    },
     logout() {
       this.$root.store.logout();
       this.$root.toast("Logout", "User logged out successfully", "success");
@@ -172,7 +167,6 @@ export default {
         location.reload();
       });
     }
-      
   }
 };
 </script>
@@ -184,5 +178,114 @@ export default {
   font-size: medium;
   margin: 5px;
   color: black;
+}
+
+.b-modal.modal {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-fade-enter-active,
+.modal-fade-leave-active {
+  transition: opacity 1;
+}
+
+.modal-fade-enter,
+.modal-fade-leave-to {
+  opacity: 1;
+}
+
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999; /* Ensure the modal appears on top */
+}
+
+
+.modal-form {
+  background-color: white; /* Set the background color of the form */
+  border: 2px solid white; /* Bright orange border */
+  padding: 20px; /* Add padding to create space between the border and form content */
+  width: 100%; /* Adjust the width as needed */
+  margin: 0 auto;
+  /* Other styles */
+}
+
+.modal-backdrop .modal-form input[type="text"],
+.modal-backdrop .modal-form input[type="url"],
+.modal-backdrop .modal-form input[type="number"] {
+  width: 100%; /* Set the width of the input fields to 100% */
+}
+
+.modal-backdrop .modal-form label {
+  font-weight: bold; /* Make the labels bold for better visibility */
+}
+
+.modal-backdrop .modal-form button[type="submit"],
+.modal-backdrop .modal-form button[type="button"] {
+  margin-top: 10px; /* Add some spacing between buttons */
+}
+// .checkbox-group {
+//   display: grid;
+//   align-items: center;
+//   gap: 10px;
+// }
+
+// .checkbox-group label {
+//   margin: 0;
+// }
+.modal-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.modal-form label {
+  text-align: center;
+}
+
+.modal-form input[type="text"],
+.modal-form input[type="url"],
+.modal-form input[type="number"] {
+  text-align: center;
+  width: 80%;
+}
+
+.modal-form button[type="submit"],
+.modal-form button[type="button"] {
+  margin-top: 10px;
+  align-self: center;
+}
+
+.modal-content {
+  background-color: #4134b9;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  max-width: 100vh; /* Decrease the maximum width */
+  width: 60vh;
+  max-height: 100vh;
+  overflow-y: auto; /* Add vertical scroll if needed */
+}
+.modal-dialog {
+  max-width: 400px; /* Decrease the maximum width */
+  margin: 30px auto; /* Adjust the margin to center the modal */
+}
+.checkbox-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.checkbox-group label {
+  flex-basis: 30%; /* Adjust the width of the label as needed */
 }
 </style>
