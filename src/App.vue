@@ -30,7 +30,7 @@
 
     <router-view />
     <div>
-      <b-modal v-model="isModalVisible" id="modal-1" title="Add Recipe" hide-footer>
+      <b-modal v-model="isModalVisible" id="modal-1" title="Add Recipe" hide-footer size="xl">
         <form class="modal-form" @submit.prevent="saveRecipe">
           <label for="recipeName">Name:</label>
           <input type="text" id="recipeName" v-model="recipe.name" required>
@@ -200,7 +200,7 @@ export default {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
+  width: 90%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
   display: flex;
@@ -214,7 +214,7 @@ export default {
   background-color: white; /* Set the background color of the form */
   border: 2px solid white; /* Bright orange border */
   padding: 20px; /* Add padding to create space between the border and form content */
-  width: 100%; /* Adjust the width as needed */
+  width: 90%; /* Adjust the width as needed */
   margin: 0 auto;
   /* Other styles */
 }
@@ -270,13 +270,13 @@ export default {
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-  max-width: 100vh; /* Decrease the maximum width */
-  width: 60vh;
+  max-width: 90%; /* Decrease the maximum width */
+  width: 90%;
   max-height: 100vh;
   overflow-y: auto; /* Add vertical scroll if needed */
 }
 .modal-dialog {
-  max-width: 400px; /* Decrease the maximum width */
+  max-width: 90%; /* Decrease the maximum width */
   margin: 30px auto; /* Adjust the margin to center the modal */
 }
 .checkbox-group {
