@@ -44,10 +44,15 @@
 
 <script>
 import RecipePreview from "../components/RecipePreview";
+import cuisine from "../assets/cuisine";
+import diet from "../assets/diet";
+import intolerance from "../assets/intolerance";
+
 export default{
 components: {
     RecipePreview
   },
+
 data(){
   return {
     searchQuery:'', 
@@ -57,17 +62,18 @@ data(){
 
     cusineSelected: null,
     cusineOptions: [
-      { value: null, text: 'Cuisine' },
+      { value: null, text: 'Cuisine', disabled: true },
     ],
+
 
     dietSelected: null,
     dietOptions: [
-      { value: null, text: 'Diet' },
+      { value: null, text: 'Diet', disabled: true },
     ],
 
     intoleranceSelected: null,
     intoleranceOptions: [
-      { value: null, text: 'Intolerance' },
+      { value: null, text: 'Intolerance', disabled: true },
     ],
 
     numberSelected: null,
@@ -91,14 +97,24 @@ mounted(){
   if (localStorage.getItem(`lastSearch`)) {
       this.lastSearch = localStorage.getItem(`lastSearch`);   
     }
+
   this.showNoRecipesAlert=false
-},
+  this.cusineOptions.push(...cuisine);
+  this.dietOptions.push(...diet);
+  this.intoleranceOptions.push(...intolerance);
+}, 
+
 methods: {
     async updateRecipes() {
       this.lastSearch = this.searchQuery;
       localStorage.setItem(`lastSearch`,  this.lastSearch);
       this.showNoRecipesAlert=false
       try {
+
+        console.log(this.searchQuery)
+        console.log(this.cusineSelected)
+        console.log(this.intoleranceSelected)
+        console.log(this.dietSelected)
         const response = await this.axios.get(
         this.$root.store.server_domain + '/recipes/complexSearch',
           {

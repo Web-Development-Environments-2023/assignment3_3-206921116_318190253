@@ -3,7 +3,8 @@
           img-alt="Image"
           img-top
           no-body
-          style="max-width: 20rem;">
+          style="max-width: 20rem;"
+          class="no-outline">
 
         <b-card-img @click="clicked" style="cursor: pointer;" :src="recipe.image" alt="Image" bottom></b-card-img>
 
@@ -106,6 +107,13 @@ export default {
 </script>
 
 <style scoped>
+
+.no-outline {
+  outline: none;
+  box-shadow: none;
+  border: none;
+}
+
 /* 
 .recipe-preview {
   display: inline-block;
