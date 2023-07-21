@@ -51,17 +51,24 @@
   <input type="checkbox" id="glutenFree" v-model="recipe.glutenFree">
 </div>
 
-          <label for="instructions">Instructions:</label>
-          <input type="text" id="instructions" v-model="recipe.instructions" required>
+<label for="instructions">Instructions:</label>
+        <div>
+          <div v-for="(step, index) in recipe.instructions" :key="index" class="step-container">
+            <input type="text" v-model="recipe.instructions[index]" :placeholder="'Step ' + (index + 1)" required>
+            <button @click="removeStep(index)">Remove</button>
+          </div>
+          <button @click="addStep">Add Step</button>
+        </div>
           <label for="ingredients">Ingredients:</label>
           <div>
-            <div v-for="(ingredient, index) in recipe.ingredients" :key="index">
+            <div v-for="(ingredient, index) in recipe.ingredients" :key="index" class="ingredient-container">
               <input type="text" v-model="ingredient.name" placeholder="Name" required>
               <input type="text" v-model="ingredient.unit" placeholder="Unit" required>
               <input type="number" v-model="ingredient.amount" placeholder="Amount" required>
               <button @click="removeIngredient(index)">Remove</button>
             </div>
-            <button @click="addIngredient">Add Ingredient</button>
+          <button @click="addIngredient">Add Ingredient</button>
+
           </div>
 
           <label for="servings">Servings:</label>
@@ -88,7 +95,7 @@ export default {
         vegetarian: false,
         glutenFree: false,
         likes: 0,
-        instructions: '',
+        instructions: [],
         servings: 0,
         ingredients: []
       }
@@ -105,6 +112,7 @@ export default {
     async saveRecipe() {
       try {
         const { name, image, duration, vegan, vegetarian, glutenFree, instructions, ingredients, servings } = this.recipe;
+        const instructionsJson = JSON.stringify(this.recipe.instructions);
 
         const response = await this.axios.post(
           this.$root.store.server_domain + "/users/addUserRecipe",
@@ -116,7 +124,7 @@ export default {
             vegan: vegan ? 1 : 0,
             vegetarian: vegetarian ? 1 : 0,
             glutenFree: glutenFree ? 1 : 0,
-            instructions: instructions,
+            instructions: instructionsJson,
             servings: servings,
             ingredients: ingredients
           },
@@ -128,8 +136,8 @@ export default {
 
         this.hideModal();
       } catch (error) {
-        console.log(this.recipe);
-        console.log(error.response);
+        //console.log(this.recipe);
+        //console.log(error.response);
         this.form.submitError = error.response.data.message;
       }
     },
@@ -142,7 +150,7 @@ export default {
         vegan: false,
         vegetarian: false,
         glutenFree: false,
-        instructions: '',
+        instructions: [],
         servings: null,
         ingredients: []
       };
@@ -158,6 +166,13 @@ export default {
 
     removeIngredient(index) {
       this.recipe.ingredients.splice(index, 1);
+    },
+    addStep() {
+      this.recipe.instructions.push(''); // Push an empty step (empty string) to the array
+    },
+
+    removeStep(index) {
+      this.recipe.instructions.splice(index, 1); // Remove the step at the specified index from the array
     },
     logout() {
       this.$root.store.logout();
@@ -288,4 +303,16 @@ export default {
 .checkbox-group label {
   flex-basis: 30%; /* Adjust the width of the label as needed */
 }
+.ingredient-container {
+  display: flex;
+  align-items: center; /* To vertically center the inputs */
+  gap: 10px; /* Add spacing between the inputs */
+}
+.step-container {
+  display: flex;
+  align-items: center; /* To vertically center the inputs and button */
+  gap: 10px; /* Add spacing between the input and button */
+}
+
+
 </style>

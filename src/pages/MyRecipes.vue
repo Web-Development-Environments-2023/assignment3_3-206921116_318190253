@@ -4,7 +4,7 @@
       <b-container>
       <b-row>
         <b-col v-for="r in recipes" :key="r.id">
-          <RecipePreview class="recipePreview" :recipe="r" />
+          <MyRecipePreview class="MyrecipePreview" :recipe="r" />
         </b-col>
       </b-row>
     </b-container>
@@ -20,10 +20,10 @@
   </template>
   
   <script>
-  import RecipePreview from "../components/RecipePreview";
+  import MyRecipePreview from "../components/MyRecipePreview";
   export default{
   components: {
-      RecipePreview
+    MyRecipePreview
     },
   data(){
     return {
@@ -39,7 +39,6 @@
   methods: {
       async updateRecipes() {
         try {
-          console.log("im trying")
           const response = await this.axios.get(
           this.$root.store.server_domain + '/users/getmyrecipes',
             {
@@ -48,8 +47,6 @@
           );
   
           const recipes = response.data;
-          console.log("these are the users:")
-          console.log(recipes)
           this.recipes = [];
           this.recipes.push(...recipes);
   

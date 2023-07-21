@@ -51,7 +51,13 @@ const routes = [
     path: "/users/about", //what do i write here??
     name: "about",
     component: () => import("./pages/AboutPage")
+  },
+  {
+    path: "recipe/myfull/:recipeId",
+    name: "MyRecipeFull",
+    component: () => import("./pages/MyRecipeViewPage")
   }
+  
 ];
 
 export default routes;
