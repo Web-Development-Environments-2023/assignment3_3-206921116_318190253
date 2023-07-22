@@ -82,10 +82,10 @@
         //   servings
         // } = response.data;
         // console.log(analyzedInstructions)
-        let _instructions = response.data.instruction;
-        let extendedIngredients = response.data.ingredients;
-        let aggregateLikes = response.data.likes;
-        let readyInMinutes = response.data.duration;
+        let _instructions = response.data.analyzedInstructions;
+        let extendedIngredients = response.data.extendedIngredients;
+        let aggregateLikes = response.data.aggregateLikes;
+        let readyInMinutes = response.data.readyInMinutes;
         let image = response.data.image;
         let title = response.data.title;
         let servings = response.data.servings;
