@@ -26,7 +26,7 @@
             <div class="wrapped">
               Instructions:
               <ol>
-                <li v-for="s in recipe._instructions" :key="s.number">
+                <li v-for="s in recipe._instructions" :key="s">
                   {{ s }}
                 </li>
               </ol>
@@ -53,17 +53,16 @@
       try {
         let response;
         // response = this.$route.params.response;
-  
         try {
           response = await this.axios.get(
             // "https://test-for-3-2.herokuapp.com/recipes/info",
-            this.$root.store.server_domain + `/recipes/myfull/${this.$route.params.recipeId}`,
+            this.$root.store.server_domain + `/recipes/familyfull/${this.$route.params.recipeId}`,
             {
               // params: { id: this.$route.params.recipeId },
               withCredentials: true
             }
           );
-  
+            //console.log(response.headers)
           // console.log("response.status", response.status);
           if (response.status !== 200) this.$router.replace("/NotFound");
         } catch (error) {
