@@ -12,6 +12,8 @@
                 <div>Ready in {{ recipe.readyInMinutes }} minutes</div>
                 <div>Likes: {{ recipe.aggregateLikes }} likes</div>
                 <div>Servings: {{ recipe.servings }}</div>
+                <div>Created by: {{ recipe.creator }}</div>
+                <div>Usually prepared: {{ recipe.season }}</div>
               </div>
               Ingredients:
               <ul>
@@ -88,6 +90,8 @@
         let image = response.data.image;
         let title = response.data.title;
         let servings = response.data.servings;
+        let creator = response.data.creator;
+        let season = response.data.season;
   
         // let _instructions = analyzedInstructions
         //   .map((fstep) => {
@@ -105,7 +109,9 @@
           readyInMinutes,
           image,
           title,
-          servings
+          servings,
+          creator,
+          season
         };
   
         this.recipe = _recipe;
