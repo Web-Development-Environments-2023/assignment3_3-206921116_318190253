@@ -1,0 +1,1 @@
+.search-container{display:grid;grid-template-columns:1fr 1fr;gap:10px;align-items:center}.search-input{display:flex;gap:10px;width:250px}.select-inputs{display:flex;flex-direction:row;gap:10px;width:750px}

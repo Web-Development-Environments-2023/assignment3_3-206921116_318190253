@@ -11,6 +11,7 @@
             <div class="mb-3">
               <div>Ready in {{ recipe.readyInMinutes }} minutes</div>
               <div>Likes: {{ recipe.aggregateLikes }} likes</div>
+              <div>Servings: {{ recipe.servings }}</div>
             </div>
             Ingredients:
             <ul>
@@ -56,20 +57,19 @@ export default {
       try {
         response = await this.axios.get(
           // "https://test-for-3-2.herokuapp.com/recipes/info",
-          this.$root.store.server_domain + "/recipes/info",
+          this.$root.store.server_domain + `/recipes/full/${this.$route.params.recipeId}`,
           {
-            params: { id: this.$route.params.recipeId }
+            // params: { id: this.$route.params.recipeId },
+            withCredentials: true
           }
         );
 
-        // console.log("response.status", response.status);
         if (response.status !== 200) this.$router.replace("/NotFound");
       } catch (error) {
         console.log("error.response.status", error.response.status);
         this.$router.replace("/NotFound");
         return;
       }
-
       let {
         analyzedInstructions,
         instructions,
@@ -77,8 +77,9 @@ export default {
         aggregateLikes,
         readyInMinutes,
         image,
-        title
-      } = response.data.recipe;
+        title,
+        servings
+      } = response.data;
 
       let _instructions = analyzedInstructions
         .map((fstep) => {
@@ -95,7 +96,8 @@ export default {
         aggregateLikes,
         readyInMinutes,
         image,
-        title
+        title,
+        servings
       };
 
       this.recipe = _recipe;

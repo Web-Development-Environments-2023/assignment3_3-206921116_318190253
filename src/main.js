@@ -13,6 +13,9 @@ const router = new VueRouter({
 import Vuelidate from "vuelidate";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-vue/dist/bootstrap-vue.css";
+import 'bootstrap-vue/dist/bootstrap-vue-icons.min.css'
+
+
 import {
   FormGroupPlugin,
   FormPlugin,
@@ -24,6 +27,9 @@ import {
   AlertPlugin,
   ToastPlugin,
   LayoutPlugin,
+  AvatarPlugin,
+  BootstrapVueIcons ,
+  ModalPlugin 
 } from "bootstrap-vue";
 [
   FormGroupPlugin,
@@ -36,6 +42,9 @@ import {
   AlertPlugin,
   ToastPlugin,
   LayoutPlugin,
+  AvatarPlugin,
+  BootstrapVueIcons,
+  ModalPlugin 
 ].forEach((x) => Vue.use(x));
 Vue.use(Vuelidate);
 
@@ -68,18 +77,21 @@ Vue.config.productionTip = false;
 
 const shared_data = {
   username: localStorage.username,
+  server_domain: "http://localhost",
   login(username) {
+    localStorage.clear(); //check for problems!!!!
     localStorage.setItem("username", username);
     this.username = username;
     console.log("login", this.username);
   },
   logout() {
     console.log("logout");
-    localStorage.removeItem("username");
+    //localStorage.removeItem("username");
+    localStorage.clear(); //check for problems!!!!
     this.username = undefined;
   },
 };
-console.log(shared_data);
+//console.log(shared_data);
 // Vue.prototype.$root.store = shared_data;
 
 new Vue({

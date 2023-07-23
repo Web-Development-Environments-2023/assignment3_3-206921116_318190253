@@ -1,77 +1,134 @@
 <template>
-  <router-link
-    :to="{ name: 'recipe', params: { recipeId: recipe.id } }"
-    class="recipe-preview"
-  >
-    <div class="recipe-body">
-      <img v-if="image_load" :src="recipe.image" class="recipe-image" />
-    </div>
-    <div class="recipe-footer">
-      <div :title="recipe.title" class="recipe-title">
-        {{ recipe.title }}
-      </div>
-      <ul class="recipe-overview">
-        <li>{{ recipe.readyInMinutes }} minutes</li>
-        <li>{{ recipe.aggregateLikes }} likes</li>
-      </ul>
-    </div>
-  </router-link>
+        <b-card 
+          img-alt="Image"
+          img-top
+          no-body
+          style="max-width: 20rem;"
+          class="no-outline">
+
+        <b-card-img @click="clicked" style="cursor: pointer;" :src="recipe.image" alt="Image" bottom></b-card-img>
+
+          <b-card-body>
+            <div class="d-flex align-items-start mb-2" @click="toggleBookmark">
+              <b-icon :icon="bookmarkIcon"></b-icon>
+              <b-card-title class="ml-2" style="font-size: 20px"><strong>{{ recipe.title }}</strong></b-card-title>
+            </div>
+            
+            <b-card-text>
+              {{ recipe.readyInMinutes }} minutes <br>
+              {{ recipe.popularity }} likes <br>
+
+              <b-avatar v-if = recipe.vegan variant="success" size="3.5em" style="font-size: 14px; margin: 2px;">Vegan</b-avatar>
+              <b-avatar v-if = recipe.vegetarian variant="success" size="3.5em" style="font-size: 14px; margin: 2px;"> Veggie</b-avatar>
+              <b-avatar v-if = recipe.glutenFree variant="success" size="3.5em" style="font-size: 14px; margin: 2px;">Gluten<br>Free</b-avatar>
+              <b-avatar v-if = !recipe.glutenFree variant="danger" size="3.5em" style="font-size: 14px; margin: 2px;">Gluten</b-avatar>
+
+            </b-card-text> 
+          </b-card-body>
+
+          <b-card-footer v-if="watched">
+            <small class="text-muted">👁 Viewed</small>
+          </b-card-footer>
+
+      </b-card>
 </template>
 
 <script>
+
 export default {
-  mounted() {
+    mounted() {
+    if (localStorage.getItem(`watched_${this.recipe.id}`)) {
+      this.watched = true;    
+    }
+
+    if (localStorage.getItem(`saved_${this.recipe.id}`)) {
+      this.bookmarkIcon = "bookmark-fill";    
+    }
+
     this.axios.get(this.recipe.image).then((i) => {
       this.image_load = true;
     });
   },
   data() {
     return {
-      image_load: false
+      image_load: false,
+      watched:false,
+      saved:false,
+      bookmarkIcon: "bookmark"
     };
   },
+  methods: 
+  {
+    async clicked() {
+      localStorage.setItem(`watched_${this.recipe.id}`, 'true');
+      this.$router.push({ name: 'recipe', params: { recipeId: this.recipe.id } });
+
+      try {
+        await this.axios.post(
+        this.$root.store.server_domain + "/users/viewed",
+        {
+          recipe_id:this.recipe.id
+        }, { withCredentials: true }
+      );
+      }
+      catch(error){
+        this.form.submitError = err.response.data.message;
+      }
+    },
+
+    async toggleBookmark() {
+      localStorage.setItem(`saved_${this.recipe.id}`, 'true');
+      if (this.bookmarkIcon === "bookmark") {
+        this.bookmarkIcon = "bookmark-fill";
+      }
+      try {
+        await this.axios.post(
+        this.$root.store.server_domain + "/users/favorites",
+        {
+          recipeId:this.recipe.id
+        }, { withCredentials: true }
+      );
+      }
+      catch(error){
+        this.form.submitError = err.response.data.message;
+      }
+    },
+
+  },
+
   props: {
     recipe: {
       type: Object,
       required: true
     }
-
-    // id: {
-    //   type: Number,
-    //   required: true
-    // },
-    // title: {
-    //   type: String,
-    //   required: true
-    // },
-    // readyInMinutes: {
-    //   type: Number,
-    //   required: true
-    // },
-    // image: {
-    //   type: String,
-    //   required: true
-    // },
-    // aggregateLikes: {
-    //   type: Number,
-    //   required: false,
-    //   default() {
-    //     return undefined;
-    //   }
-    // }
   }
 };
+
 </script>
 
 <style scoped>
+
+.no-outline {
+  outline: none;
+  box-shadow: none;
+  border: none;
+}
+
+/* 
 .recipe-preview {
   display: inline-block;
   width: 90%;
   height: 100%;
   position: relative;
   margin: 10px 10px;
+
 }
-.recipe-preview > .recipe-body {
+
+.b-card {
+  flex: 1 1 300px;  
+} 
+
+ .recipe-preview > .recipe-body {
   width: 100%;
   height: 200px;
   position: relative;
@@ -137,5 +194,5 @@ export default {
   width: 90px;
   display: table-cell;
   text-align: center;
-}
+}  */
 </style>
